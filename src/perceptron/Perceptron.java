@@ -85,7 +85,10 @@ public class Perceptron
 			  }
 
 			  /* Root Mean Squared Error */
-			  System.out.println("Iteration " + iteration + " : RMSE = " + Math.sqrt( globalError/number_of_files__train ) );
+			  if (iteration < 10) 
+				  System.out.println("Iteration 0" + iteration + " : RMSE = " + Math.sqrt( globalError/number_of_files__train ) );
+			  else
+				  System.out.println("Iteration " + iteration + " : RMSE = " + Math.sqrt( globalError/number_of_files__train ) );
 			  //System.out.println( Arrays.toString( weights ) );
 		  } 
 		  while(globalError != 0 && iteration<=MAX_ITER);
