@@ -128,21 +128,51 @@ public class Perceptron
 		   System.out.println();
 		   
 		   
+		   double tp = 0.0;
+		   double fp = 0.0; 
+		   double tn = 0.0;
+		   double fn = 0.0;
+		   
 		  for (p = 0; p < number_of_files__test; p++) 
 		  {
-			  output = calculateOutput( theta, weights, feature_matrix__test, p, globo_dict_size );
-		      System.out.println("predicted class = " + output );
+			  int predicted_class = calculateOutput( theta, weights, feature_matrix__test, p, globo_dict_size );
+		      //System.out.println("predicted class = " + predicted_class );
 		      
 		      int actual_class = ( test_file_true_label[p] ).equals(LABEL) ? 1 : 0;
 		      
-		      System.out.println( "actual class = " + actual_class );
+		      //System.out.println( "actual class = " + actual_class );
 		      
-		      System.out.println( "actual class = " + test_file_true_label[p] );
+		      //System.out.println( "actual class = " + test_file_true_label[p] );
 		      
-		      System.out.println();
+		      //System.out.println();
+		      
+		      if( actual_class == 1 && predicted_class == 1 )
+		    	  tp++;
+		      if( actual_class == 1 && predicted_class == 0 )
+		    	  fn++;
+		      if( actual_class == 0 && predicted_class == 1 )
+		    	  fp++;
+		      if( actual_class == 0 && predicted_class == 0 )
+		    	  tn++;   
 		  }
 		  
+		  System.out.println( "tp: " + tp );
+		  System.out.println( "fp: " + fp );
+		  System.out.println( "tn: " + tn );
+		  System.out.println( "fn: " + fn );
+		  System.out.println();
 		  
+		  double precision = tp / (tp + fp);
+		  System.out.println( "precision = " + precision );
+		  
+		  double recall = tp / (tp + fn);
+		  System.out.println( "recall = " + recall );
+		  
+		  double f_measure = ( 2 * ( precision * recall ) ) / ( precision + recall );
+		  System.out.println( "f_measure = " + f_measure );
+		  
+		  System.out.println();
+		  System.out.println();
 		  //put in some shit about F-measure and whatnot
 		  
 		  
