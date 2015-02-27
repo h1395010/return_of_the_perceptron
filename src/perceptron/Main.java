@@ -15,8 +15,8 @@ import com.google.common.collect.Table.Cell;
 
 public class Main 
 {
-	//static String PATH = "/home/matthias/Workbench/SUTD/ISTD_50.570/assignments/data/train";
-	static String PATH = "/home/matthias/Workbench/SUTD/ISTD_50.570/assignments/practice_data/data/train";
+	static String PATH = "/home/matthias/Workbench/SUTD/ISTD_50.570/assignments/data/train";
+	//static String PATH = "/home/matthias/Workbench/SUTD/ISTD_50.570/assignments/practice_data/data/train";
 	
 	//all the words in each file as index, the label as value
 	//static Map< ArrayList<String> , String > train__list_of_file_words = new HashMap<>();
@@ -41,8 +41,8 @@ public class Main
 	{
 		//each of the diferent categories
 		//String[] categories = { "/atheism", "/politics", "/science", "/sports"};
-		//String[] categories = { "/atheism", "/sports"};
-		String[] categories = { "/politics", "/science"};
+		String[] categories = { "/atheism", "/sports"};
+		//String[] categories = { "/politics", "/science"};
 		
 		//cycle through all categories once to populate the global dict
 		for(int cycle = 0; cycle <= 1; cycle++)
@@ -64,19 +64,19 @@ public class Main
 		}
 		
 		
-		for ( Cell< ArrayList<String>, String, Integer > cell: train__list_of_file_words.cellSet() )
-		{
-		    System.out.println(cell.getRowKey()+" "+cell.getColumnKey()+" "+cell.getValue());
-		}
+//		for ( Cell< ArrayList<String>, String, Integer > cell: train__list_of_file_words.cellSet() )
+//		{
+//		    System.out.println(cell.getRowKey()+" "+cell.getColumnKey()+" "+cell.getValue());
+//		}
 		
 		
 		EvaluateFiles.generate_word_frequency_count_struc( GLOBO_DICT, train__list_of_file_words, train_freq_count_against_globo_dict );
 		
 		
-		for ( Cell< int[] , String , Integer > cell: train_freq_count_against_globo_dict.cellSet() )
-		{
-		    System.out.println(Arrays.toString( cell.getRowKey() ) +" "+cell.getColumnKey()+" "+cell.getValue());
-		}
+//		for ( Cell< int[] , String , Integer > cell: train_freq_count_against_globo_dict.cellSet() )
+//		{
+//		    System.out.println(Arrays.toString( cell.getRowKey() ) +" "+cell.getColumnKey()+" "+cell.getValue());
+//		}
 		
 		Perceptron.perceptron(train_freq_count_against_globo_dict, GLOBO_DICT);
 		

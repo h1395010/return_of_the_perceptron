@@ -17,8 +17,8 @@ public class Perceptron
 	  static int theta = 0; 
 	  
       //static final String LABEL = "atheism";
-      //static final String LABEL = "sports";
-      static final String LABEL = "science";
+      static final String LABEL = "sports";
+      //static final String LABEL = "science";
 	  
 	  public static void perceptron( Table< int[] , String , Integer > train_freq_count_against_globo_dict,
 			  						 Set<String> GLOBO_DICT )
@@ -81,7 +81,7 @@ public class Perceptron
 			  }
 
 			  /* Root Mean Squared Error */
-			  System.out.println("Iteration "+iteration+" : RMSE = "+Math.sqrt(globalError/number_of_files));
+			  System.out.println("Iteration " + iteration + " : RMSE = " + Math.sqrt( globalError/number_of_files ) );
 			  //System.out.println( Arrays.toString( weights ) );
 		  } 
 		  while(globalError != 0 && iteration<=MAX_ITER);
