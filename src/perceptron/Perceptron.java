@@ -16,15 +16,16 @@ public class Perceptron
 	  static double LEARNING_RATE = 0.1;           
 	  static int theta = 0; 
 	  
-      //static final String LABEL = "atheism";
-      static final String LABEL = "sports";
+      static final String LABEL = "atheism";
+      //static final String LABEL = "sports";
       //static final String LABEL = "science";
 	  
 	  public static void perceptron( Table< int[] , String , Integer > train_freq_count_against_globo_dict,
+			  					     Table< int[] , String , Integer > test_freq_count_against_globo_dict,
 			  						 Set<String> GLOBO_DICT )
 	  {
 		  int globo_dict_size = GLOBO_DICT.size();
-		  int number_of_files = train_freq_count_against_globo_dict.size();
+		  int number_of_files__train = train_freq_count_against_globo_dict.size();
 		  
 		  double[] weights = new double[ globo_dict_size + 1 ];//one for bias
 		  for (int i = 0; i < weights.length; i++) 
@@ -33,8 +34,9 @@ public class Perceptron
 		  }
 		    
 		  		    
-		   double[][] feature_matrix = new double[ number_of_files ][ globo_dict_size ];
-		   int[] outputs = new int [ number_of_files ];
+
+		   double[][] feature_matrix__train = new double[ number_of_files__train ][ globo_dict_size ];
+		   int[] outputs__train = new int [ number_of_files__train ];
 		    
 		   int z = 0;
 		   for ( Cell< int[] , String , Integer > cell: train_freq_count_against_globo_dict.cellSet() )
@@ -44,16 +46,18 @@ public class Perceptron
 			   
 			   for (int q = 0; q < globo_dict_size; q++) 
 	           {
-				   feature_matrix[z][q] = container_of_feature_vector[q];
+				   feature_matrix__train[z][q] = container_of_feature_vector[q];
 	           }
-	           outputs[z] = String.valueOf( cell.getColumnKey() ).equals(LABEL) ? 1 : 0;
+			   outputs__train[z] = String.valueOf( cell.getColumnKey() ).equals(LABEL) ? 1 : 0;
 	           
 	           z++;
 		   }
 		   //System.out.println( Arrays.toString( outputs ) );
 		    
+		   
+		   
 		  
-		  
+		  //LEARNING WEIGHTS
 		  double localError, globalError;
 		  int p, iteration, output;
 		
@@ -63,16 +67,16 @@ public class Perceptron
 			  iteration++;
 			  globalError = 0;
 			  //loop through all instances (complete one epoch)
-			  for (p = 0; p < number_of_files; p++) 
+			  for (p = 0; p < number_of_files__train; p++) 
 			  {
 				  // calculate predicted class
-				  output = calculateOutput( theta, weights, feature_matrix, p, globo_dict_size );
+				  output = calculateOutput( theta, weights, feature_matrix__train, p, globo_dict_size );
 				  // difference between predicted and actual class values
-				  localError = outputs[p] - output;
+				  localError = outputs__train[p] - output;
 				  //update weights and bias
 				  for (int i = 0; i < globo_dict_size; i++) 
 				  {
-					  weights[i] += ( LEARNING_RATE * localError * feature_matrix[p][i] );
+					  weights[i] += ( LEARNING_RATE * localError * feature_matrix__train[p][i] );
 				  }
 				  weights[ globo_dict_size ] += ( LEARNING_RATE * localError );
 				  
@@ -81,10 +85,74 @@ public class Perceptron
 			  }
 
 			  /* Root Mean Squared Error */
-			  System.out.println("Iteration " + iteration + " : RMSE = " + Math.sqrt( globalError/number_of_files ) );
+			  System.out.println("Iteration " + iteration + " : RMSE = " + Math.sqrt( globalError/number_of_files__train ) );
 			  //System.out.println( Arrays.toString( weights ) );
 		  } 
 		  while(globalError != 0 && iteration<=MAX_ITER);
+		  
+		  
+		  /*
+		    for(int j = 0; j < 10; j++){
+	        double x1 = randomNumber(-10 , 10);
+	        double y1 = randomNumber(-10 , 10);   
+	        double z1 = randomNumber(-10 , 10); 
+	      
+	        output = calculateOutput(theta,weights, x1, y1, z1);
+	        System.out.println("\n=======\nNew Random Point:");
+	        //System.out.println("x = "+x1+",y = "+y1+ ",z = "+z1);
+	        System.out.println("class = "+output);
+	        */
+	        
+	        
+	       int number_of_files__test = test_freq_count_against_globo_dict.size();
+	       double[][] feature_matrix__test = new double[ number_of_files__test ][ globo_dict_size ];
+	        
+		   //i don't actually need this info, but something to clarify the output would be great
+		   String[] test_file_true_label = new String [ number_of_files__test ];
+		    
+		   int x = 0;
+		   for ( Cell< int[] , String , Integer > cell: test_freq_count_against_globo_dict.cellSet() )
+		   {			   
+			   int[] container_of_feature_vector__test = cell.getRowKey();
+			   //System.out.println( Arrays.toString( container_of_feature_vector ) );
+			   
+			   for (int q = 0; q < globo_dict_size; q++) 
+	           {
+				   feature_matrix__test[x][q] = container_of_feature_vector__test[q];
+	           }
+			   test_file_true_label[x] = (String)( cell.getColumnKey() );
+	           
+	           x++;
+		   }
+		   //System.out.println( Arrays.toString( outputs ) );
+		   System.out.println();
+		   
+		   
+		  for (p = 0; p < number_of_files__test; p++) 
+		  {
+			  output = calculateOutput( theta, weights, feature_matrix__test, p, globo_dict_size );
+		      System.out.println("predicted class = " + output );
+		      
+		      int actual_class = ( test_file_true_label[p] ).equals(LABEL) ? 1 : 0;
+		      
+		      System.out.println( "actual class = " + actual_class );
+		      
+		      System.out.println( "actual class = " + test_file_true_label[p] );
+		      
+		      System.out.println();
+		  }
+		  
+		  
+		  //put in some shit about F-measure and whatnot
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
 
 	  }
 	  

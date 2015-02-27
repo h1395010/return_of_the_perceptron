@@ -15,8 +15,8 @@ import com.google.common.collect.Table.Cell;
 
 public class Main 
 {
-	static String PATH = "/home/matthias/Workbench/SUTD/ISTD_50.570/assignments/data/train";
-	//static String PATH = "/home/matthias/Workbench/SUTD/ISTD_50.570/assignments/practice_data/data/train";
+	//static String PATH = "/home/matthias/Workbench/SUTD/ISTD_50.570/assignments/data/train";
+	static String PATH = "/home/matthias/Workbench/SUTD/ISTD_50.570/assignments/practice_data/data/train";
 	
 	//all the words in each file as index, the label as value
 	//static Map< ArrayList<String> , String > train__list_of_file_words = new HashMap<>();
@@ -64,21 +64,42 @@ public class Main
 		}
 		
 		
-//		for ( Cell< ArrayList<String>, String, Integer > cell: train__list_of_file_words.cellSet() )
-//		{
-//		    System.out.println(cell.getRowKey()+" "+cell.getColumnKey()+" "+cell.getValue());
-//		}
 		
 		
 		EvaluateFiles.generate_word_frequency_count_struc( GLOBO_DICT, train__list_of_file_words, train_freq_count_against_globo_dict );
 		
 		
-//		for ( Cell< int[] , String , Integer > cell: train_freq_count_against_globo_dict.cellSet() )
+
+		
+		
+		//Test
+		for(int cycle = 0; cycle <= 1; cycle++)
+		{			
+			//get the test data
+			//String test_path = "/home/matthias/Workbench/SUTD/ISTD_50.570/assignments/data/train";
+			String test_path = "/home/matthias/Workbench/SUTD/ISTD_50.570/assignments/practice_data/data/test";
+			File test_dict = new File( test_path + categories[cycle]);
+
+			EvaluateFiles.store_file_words_with_label( test_dict , GLOBO_DICT , test__list_of_file_words );	
+		}
+		
+		EvaluateFiles.generate_word_frequency_count_struc( GLOBO_DICT, test__list_of_file_words, test_freq_count_against_globo_dict );
+		
+		
+//		for ( Cell< ArrayList<String>, String, Integer > cell: test__list_of_file_words.cellSet() )
+//		{
+//		    System.out.println(cell.getRowKey()+" "+cell.getColumnKey()+" "+cell.getValue());
+//		}
+//		
+//		for ( Cell< int[] , String , Integer > cell: test_freq_count_against_globo_dict.cellSet() )
 //		{
 //		    System.out.println(Arrays.toString( cell.getRowKey() ) +" "+cell.getColumnKey()+" "+cell.getValue());
+		
 //		}
 		
-		Perceptron.perceptron(train_freq_count_against_globo_dict, GLOBO_DICT);
+		Perceptron.perceptron(train_freq_count_against_globo_dict, test_freq_count_against_globo_dict, GLOBO_DICT);
+
+		
 		
 	}
 
